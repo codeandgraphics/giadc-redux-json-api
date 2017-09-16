@@ -1,6 +1,6 @@
-# giadc-redux-json-api
-[![npm](https://img.shields.io/npm/v/giadc-redux-json-api.svg?maxAge=2592000)]()
-[![Travis](https://img.shields.io/travis/giadc/giadc-redux-json-api.svg)]()
+# redux-json-api-helper
+[![npm](https://img.shields.io/npm/v/redux-json-api-helper.svg?maxAge=2592000)]()
+[![Travis](https://img.shields.io/travis/codeandgraphics/redux-json-api-helper.svg)]()
 
 A package for consuming and accessing [JSON API](http://jsonapi.org/) data with Redux.
 It will take a standard JSON API response, automatically flatten its structure, and
