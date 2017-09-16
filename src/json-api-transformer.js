@@ -1,5 +1,6 @@
 import { Map, Set } from 'immutable';
 import pluralize from 'pluralize';
+import get from 'lodash/get'
 
 /**
  * Insert an Entity or group of Entities
@@ -87,7 +88,7 @@ const transformRelationships = (relationships) => {
             }
             : {
                 ...transformedRelationships,
-                [key]: relationships[key].data.id,
+                [key]: get(relationships[key], 'data.id'),
             }
     ), {});
 
