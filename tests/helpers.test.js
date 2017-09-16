@@ -8,9 +8,9 @@ import {
     getIds,
     getEntitiesMeta,
     getEntityMeta,
-    getMostRecentlyLoaded,
     generateEntity,
 } from '../src/helpers';
+
 import { insertOrUpdateEntities } from '../src/json-api-transformer';
 
 import { initialJsonApiResponse } from './exampleData';

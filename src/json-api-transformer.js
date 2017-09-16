@@ -1,5 +1,7 @@
 import { Map, Set } from 'immutable';
 import pluralize from 'pluralize';
+
+import camelCase from 'lodash/camelCase';
 import get from 'lodash/get';
 
 /**
@@ -33,7 +35,7 @@ export const insertOrUpdateEntities = (state, payload) => {
 const insertOrUpdateEntity = (state, entity) => {
     validateEntity(entity);
 
-    const pluralKey = pluralize(entity.type);
+    const pluralKey = camelCase(pluralize(entity.type));
 
     return state.mergeIn(
         [pluralKey, 'byId', entity.id, 'data'],

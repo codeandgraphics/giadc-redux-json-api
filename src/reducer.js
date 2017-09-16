@@ -1,5 +1,7 @@
 import { fromJS, Map } from 'immutable';
+
 import actionNames from './action-names';
+
 import {
     addRelationshipToEntity,
     clearEntityType,

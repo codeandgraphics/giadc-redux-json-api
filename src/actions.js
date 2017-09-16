@@ -1,4 +1,5 @@
 import pluralize from 'pluralize';
+
 import actionNames from './action-names';
 
 /**
