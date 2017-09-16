@@ -6,7 +6,7 @@ import actionNames from '../src/action-names';
 import { commentJsonResponse, initialJsonApiResponse, serverSideRendering } from './exampleData';
 
 const initialExpectedState = reducer(Map({}), {
-    type: actionNames.LOAD_JSON_API_ENTITY_DATA,
+    type: actionNames.LOAD_DATA,
     data: initialJsonApiResponse
 });
 
@@ -25,7 +25,7 @@ describe('reducer', () => {
         ));
     });
 
-    it('should handle an initial LOAD_JSON_API_ENTITY_DATA', () => {
+    it('should handle an initial LOAD_DATA', () => {
         expect(Map.isMap(initialExpectedState)).to.be.true;
         expect(initialExpectedState.keySeq().toArray().sort()).to.eql(['articles', 'comments', 'people']);
         expect(Map.isMap(initialExpectedState.get('articles'))).to.be.true;
@@ -36,9 +36,9 @@ describe('reducer', () => {
         expect(initialExpectedState.getIn(['articles', 'byId', '1', 'data', 'comments']).toArray()).to.eql(['5', '12']);
     });
     
-    it('should handle an additional LOAD_JSON_API_ENTITY_DATA', () => {
+    it('should handle an additional LOAD_DATA', () => {
         const result = reducer(initialExpectedState, {
-            type: actionNames.LOAD_JSON_API_ENTITY_DATA,
+            type: actionNames.LOAD_DATA,
             data: commentJsonResponse,
         });
 
@@ -47,9 +47,9 @@ describe('reducer', () => {
         expect(result.getIn(['comments', 'byId', '44', 'data', 'author'])).to.eql('9');
     });
 
-    it('should handle ADD_RELATIONSHIP_TO_ENTITY', () => {
+    it('should handle ADD_RELATIONSHIP', () => {
         const result = reducer(initialExpectedState, {
-            type: actionNames.ADD_RELATIONSHIP_TO_ENTITY + '_ARTICLE_COMMENTS',
+            type: actionNames.ADD_RELATIONSHIP + '_ARTICLE_COMMENTS',
             entityKey: 'article',
             entityId: '1',
             relationshipKey: 'comments',
@@ -60,9 +60,9 @@ describe('reducer', () => {
         expect(result.getIn(['articles', 'byId', '1', 'data', 'comments']).toArray()).to.eql(['5', '12', '44']);
     });
 
-    it('should handle REMOVE_RELATIONSHIP_FROM_ENTITY', () => {
+    it('should handle REMOVE_RELATIONSHIP', () => {
         const result = reducer(initialExpectedState, {
-            type: actionNames.REMOVE_RELATIONSHIP_FROM_ENTITY + '_ARTICLE_COMMENTS',
+            type: actionNames.REMOVE_RELATIONSHIP + '_ARTICLE_COMMENTS',
             entityKey: 'article',
             entityId: '1',
             relationshipKey: 'comments',

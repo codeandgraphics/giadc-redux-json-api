@@ -8,7 +8,7 @@ import actionNames from './action-names';
  * @return {Object}
  */
 export const loadJsonApiEntityData = data => ({
-    type: actionNames.LOAD_JSON_API_ENTITY_DATA,
+    type: actionNames.LOAD_DATA,
     data,
 });
 
@@ -22,7 +22,9 @@ export const loadJsonApiEntityData = data => ({
  * @return {Object}
  */
 export const addRelationshipToEntity = (entityKey, entityId, relationshipKey, relationshipObject) => ({
-    type: `${actionNames.ADD_RELATIONSHIP_TO_ENTITY}_${pluralize(entityKey, 1).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
+    type: `${
+        actionNames.ADD_RELATIONSHIP
+    }_${pluralize(entityKey, 1).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
     entityKey,
     entityId,
     relationshipKey,
@@ -39,7 +41,9 @@ export const addRelationshipToEntity = (entityKey, entityId, relationshipKey, re
  * @return {Object}
  */
 export const removeRelationshipFromEntity = (entityKey, entityId, relationshipKey, relationshipId) => ({
-    type: `${actionNames.REMOVE_RELATIONSHIP_FROM_ENTITY}_${pluralize(entityKey, 1).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
+    type: `${
+        actionNames.REMOVE_RELATIONSHIP
+    }_${pluralize(entityKey, 1).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
     entityKey,
     entityId,
     relationshipKey,
@@ -66,7 +70,7 @@ export const updateEntity = (entityKey, entityId, data) => ({
  *
  * @param  {String} entityKey
  * @param  {String} metaKey
- * @param  {Mixed}  value
+ * @param  {*}  value
  * @return {Object}
  */
 export const updateEntitiesMeta = (entityKey, metaKey, value) => ({
@@ -82,7 +86,7 @@ export const updateEntitiesMeta = (entityKey, metaKey, value) => ({
  * @param  {String} entityKey
  * @param  {String} entityId
  * @param  {String} metaKey
- * @param  {Mixed}  value
+ * @param  {*}  value
  * @return {Object}
  */
 export const updateEntityMeta = (entityKey, entityId, metaKey, value) => ({

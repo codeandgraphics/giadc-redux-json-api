@@ -3,7 +3,6 @@ export {
     getEntityMeta,
     getEntities,
     getEntitiesMeta,
-    getMostRecentlyLoaded,
     getId,
     getIds,
     generateEntity,

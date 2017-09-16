@@ -1,4 +1,4 @@
-import { fromJS, isKeyed, Map } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import actionNames from './action-names';
 import {
     addRelationshipToEntity,
@@ -12,9 +12,9 @@ import {
 } from './json-api-transformer';
 
 const reducerMap = {
-    [actionNames.LOAD_JSON_API_ENTITY_DATA]: (state, action) => insertOrUpdateEntities(state, action.data),
+    [actionNames.LOAD_DATA]: (state, action) => insertOrUpdateEntities(state, action.data),
 
-    [actionNames.ADD_RELATIONSHIP_TO_ENTITY]: (state, action) => addRelationshipToEntity(
+    [actionNames.ADD_RELATIONSHIP]: (state, action) => addRelationshipToEntity(
         state,
         action.entityKey,
         action.entityId,
@@ -22,7 +22,7 @@ const reducerMap = {
         action.relationshipObject
     ),
 
-    [actionNames.REMOVE_RELATIONSHIP_FROM_ENTITY]: (state, action) => removeRelationshipFromEntity(
+    [actionNames.REMOVE_RELATIONSHIP]: (state, action) => removeRelationshipFromEntity(
         state,
         action.entityKey,
         action.entityId,
@@ -60,15 +60,14 @@ const reducerMap = {
 
     [actionNames.CLEAR_ENTITY_TYPE]: (state, action) => clearEntityType(
         state,
-        action.entityKey,
-        action.entityId,
+        action.entityKey
     ),
 
     default: state => state,
 };
 
 /**
- * The giadc-redux-json-api reducer
+ * The redux-json-api-helper reducer
  *
  * @param  {Object} state
  * @param  {Object} action

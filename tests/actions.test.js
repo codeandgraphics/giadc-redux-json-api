@@ -16,7 +16,7 @@ describe('actions', () => {
             }
         };
         const expectedAction = {
-          type: actionNames.LOAD_JSON_API_ENTITY_DATA,
+          type: actionNames.LOAD_DATA,
           data
         };
         expect(actions.loadJsonApiEntityData(data)).to.eql(expectedAction);
@@ -34,7 +34,7 @@ describe('actions', () => {
             }
         };
         const expectedAction = {
-            type: actionNames.ADD_RELATIONSHIP_TO_ENTITY + '_ARTICLE_READERS',
+            type: actionNames.ADD_RELATIONSHIP + '_ARTICLE_READERS',
             entityKey,
             entityId,
             relationshipKey,    
@@ -49,7 +49,7 @@ describe('actions', () => {
         const relationshipKey = 'reader';
         const relationshipId = '54321';
         const expectedAction = {
-            type: actionNames.REMOVE_RELATIONSHIP_FROM_ENTITY + '_ARTICLE_READERS',
+            type: actionNames.REMOVE_RELATIONSHIP + '_ARTICLE_READERS',
             entityKey,
             entityId,
             relationshipKey,    

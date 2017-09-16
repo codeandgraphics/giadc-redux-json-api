@@ -68,7 +68,7 @@ export const getIds = jsonData => jsonData.data.map(entity => entity.id);
  * @param  {Object} state
  * @param  {String} entityKey
  * @param  {String} metaKey
- * @return {Mixed}
+ * @return {*}
  */
 export const getEntitiesMeta = (state, entityKey, metaKey = null) => (
     (metaKey === null)
@@ -83,11 +83,14 @@ export const getEntitiesMeta = (state, entityKey, metaKey = null) => (
  * @param  {String} entityKey
  * @param  {String} entityId
  * @param  {String} metaKey
- * @return {Mixed}
+ * @return {*}
  */
 export const getEntityMeta = (state, entityKey, entityId, metaKey = null) => (
     (metaKey === null)
-        ? state.getIn([entityKey, 'byId', entityId, 'meta']) && state.getIn([entityKey, 'byId', entityId, 'meta']).toJS()
+        ?
+            state.getIn([entityKey, 'byId', entityId, 'meta']) &&
+            state.getIn([entityKey, 'byId', entityId, 'meta']).toJS()
+
         : state.getIn([entityKey, 'byId', entityId, 'meta', metaKey])
 );
 

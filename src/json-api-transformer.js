@@ -79,8 +79,7 @@ const transformEntity = (entity) => {
  * @param  {Object} relationships
  * @return {Array|String}
  */
-const transformRelationships = (relationships) => {
-    const result = Object.keys(relationships).reduce((transformedRelationships, key) => (
+const transformRelationships = relationships => Object.keys(relationships).reduce((transformedRelationships, key) => (
         (Array.isArray(relationships[key].data))
             ? {
                 ...transformedRelationships,
@@ -91,9 +90,6 @@ const transformRelationships = (relationships) => {
                 [key]: get(relationships[key], 'data.id'),
             }
     ), {});
-
-    return result;
-};
 
 /**
  * Insert an Entity into the state and
@@ -181,7 +177,7 @@ export const updateEntity = (state, entityKey, entityId, data) => insertOrUpdate
  * @param  {Object} state
  * @param  {String} entityKey
  * @param  {String} metaKey
- * @param  {Mixed}  value
+ * @param  {*}  value
  * @return {Object}
  */
 export const updateEntitiesMeta = (state, entityKey, metaKey, value) => {
@@ -198,7 +194,7 @@ export const updateEntitiesMeta = (state, entityKey, metaKey, value) => {
  * @param  {String} entityKey
  * @param  {String} entityId
  * @param  {String} metaKey
- * @param  {Mixed}  value
+ * @param  {*}  value
  * @return {Object}
  */
 export const updateEntityMeta = (state, entityKey, entityId, metaKey, value) => {
