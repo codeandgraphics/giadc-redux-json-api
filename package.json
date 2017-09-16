@@ -1,8 +1,8 @@
 {
-  "name": "giadc-redux-json-api",
-  "version": "0.9.0",
+  "name": "redux-json-api-helper",
+  "version": "0.0.1",
   "description": "Reducer, actions, and helper functions for managing JSON API entities in Redux",
-  "main": "./lib/giadc-redux-json-api.js",
+  "main": "./lib/index.js",
   "scripts": {
     "build": "babel --presets es2015,stage-0 -d lib/ src/",
     "watch": "babel --watch --presets es2015,stage-0 -d lib/ src/",
@@ -12,9 +12,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codeandgraphics/giadc-redux-json-api.git"
+    "url": "git+https://github.com/codeandgraphics/redux-json-api-helper.git"
   },
-  "author": "Ryan Marganti <rmarganti@gannett.com>",
   "license": "MIT",
   "dependencies": {
     "immutable": "^3.8.1",

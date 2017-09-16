@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Map, Set } from 'immutable';
 
-import { reducer } from '../src/giadc-redux-json-api';
+import { reducer } from '../src';
 import actionNames from '../src/action-names';
 import { commentJsonResponse, initialJsonApiResponse, serverSideRendering } from './exampleData';
 
@@ -23,7 +23,7 @@ describe('reducer', () => {
         expect(Set.isSet(
             result.getIn(['users', 'byId', 'ec9f2054-87e1-11e5-92bb-04016484ad01', 'data', 'permissions'])
         ));
-    })
+    });
 
     it('should handle an initial LOAD_JSON_API_ENTITY_DATA', () => {
         expect(Map.isMap(initialExpectedState)).to.be.true;
