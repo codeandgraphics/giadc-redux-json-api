@@ -1,7 +1,9 @@
 export {
     getEntity,
+    getEntityWithRelationships,
     getEntityMeta,
     getEntities,
+    getEntitiesWithRelationships,
     getEntitiesMeta,
     getId,
     getIds,
