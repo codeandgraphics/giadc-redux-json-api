@@ -35,12 +35,54 @@ export const getEntity = (state, key, id) => {
     const pluralKey = pluralize(key);
     const entity = state.getIn([pluralKey, 'byId', id, 'data']);
 
+
     return entity === undefined
         ? undefined
         : {
             ...entity.toJS(),
             id,
         };
+};
+
+/**
+ * Grab an Entity from the state with relationships
+ *
+ * @param  {Object} state
+ * @param  {String} key
+ * @param  {String} id
+ * @param  {*} relations
+ * @return {Object}
+ */
+export const getEntityWithRelationships = (state, key, id, relations = null) => {
+    const entity = getEntity(state, key, id);
+
+    if (Array.isArray(relations)) {
+        const relationships = relations.reduce((result, relation) => ({
+            ...result,
+            [relation]: getRelationships(state, relation, entity),
+        }), {});
+
+        return {
+            ...entity,
+            ...relationships,
+        };
+    } else if (typeof relations === 'string') {
+        return {
+            ...entity,
+            [relations]: getRelationships(state, relations, entity),
+        };
+    }
+
+    return entity;
+};
+
+const getRelationships = (state, relation, entity) => {
+    const relationIds = entity[relation];
+    if (Array.isArray(relationIds)) {
+        return getEntities(state, relation, relationIds);
+    }
+
+    return getEntity(state, relation, relationIds);
 };
 
 /**
@@ -68,6 +110,34 @@ export const getEntities = (state, key, ids = null) => {
     }
 
     return ids.map(id => getEntity(state, key, id)).filter(entity => !!entity);
+};
+
+/**
+ * Get an array of Entities from the state with multiple relationships
+ *
+ * @param  {Object}     state
+ * @param  {String}     key
+ * @param  {Array|null} ids
+ * @param  {*|null}     relations
+ * @return {Array}
+ */
+export const getEntitiesWithRelationships = (state, key, ids = null, relations = null) => {
+    const pluralKey = pluralize(key);
+
+    if (ids === null) {
+        if (!state.hasIn([pluralKey, 'byId'])) {
+            return [];
+        }
+
+        const idsToFetch = state
+            .getIn([pluralKey, 'byId'])
+            .keySeq()
+            .toArray();
+
+        return idsToFetch.map(id => getEntityWithRelationships(state, pluralKey, id, relations));
+    }
+
+    return ids.map(id => getEntityWithRelationships(state, key, id, relations)).filter(entity => !!entity);
 };
 
 /**
