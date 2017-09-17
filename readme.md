@@ -2,7 +2,7 @@
 [![npm](https://img.shields.io/npm/v/redux-json-api-helper.svg?maxAge=2592000)]()
 [![Travis](https://img.shields.io/travis/codeandgraphics/redux-json-api-helper.svg)]()
 
-A package for consuming and accessing [JSON API](http://jsonapi.org/) data with Redux.
+A package for consuming and accessing [JSON API](https://jsonapi.org/) data with Redux.
 It will take a standard JSON API response, automatically flatten its structure, and
 update your redux store. For most apps, this greatly cuts down on the number of reducers
 that need to be written.
@@ -13,10 +13,10 @@ JSON API data that has already been retrieved from a server.
 ## Hooking up the store
 ```javascript
 import { reducer as entities } from 'redux-json-api-helper';
-import * as your-reducers from './reducers';
+import * as reducers from './reducers';
 
 const store = createStore(
-    combineReducers({...your-reducers, entities}),
+    combineReducers({...reducers, entities}),
 );
 ```
 
