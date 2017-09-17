@@ -12,7 +12,7 @@ JSON API data that has already been retrieved from a server.
 
 ## Hooking up the store
 ```javascript
-import { reducer as entities } from 'giadc-redux-json-api';
+import { reducer as entities } from 'redux-json-api-helper';
 import * as your-reducers from './reducers';
 
 const store = createStore(
@@ -22,14 +22,14 @@ const store = createStore(
 
 ## Consuming JSON data
 ```javascript
-import { loadJsonApiEntityData } from 'giadc-redux-json-api';
+import { loadJsonApiEntityData } from 'redux-json-api-helper';
 
 dispatch(loadJsonApiEntityData(jsonApiResponseFromServer));
 ```
 
 ## Manipulating entities
 ```javascript
-import { addRelationshipToEntity, removeRelationshipFromEntity, updateEntity } from 'giadc-reduc-json-api';
+import { addRelationshipToEntity, removeRelationshipFromEntity, updateEntity } from 'redux-json-api-helper';
 
 /**
  * dispatch(updateEntity('article', articleId, {
@@ -60,7 +60,7 @@ removeRelationshipFromEntity(entityKey, entityId, relationshipKey, relationshipI
 
 ## Retrieving entities from the store
 ```javascript
-import { getEntity, getEntities } from 'giadc-redux-json-api';
+import { getEntity, getEntities } from 'redux-json-api-helper';
 
 // Get single article
 const article = getEntity(state.entities, 'article', articleId);
@@ -74,7 +74,7 @@ const articles = getEntities(state.entities, 'articles', [id1, id2, id3]);
 
 ## Removing entities from the store
 ```javascript
-import { removeEntity, clearEntityType } from 'giadc-redux-json-api';
+import { removeEntity, clearEntityType } from 'redux-json-api-helper';
 
 // Remove a single entity
 dispatch(removeEntity('articles', '1'));
@@ -85,7 +85,7 @@ dispatch(clearEntityType('articles'));
 
 ## Metadata
 ```javascript
-import { updateEntitiesMeta, updateEntityMeta, getEntitiesMeta, getEntityMeta } from 'giadc-redux-json-api';
+import { updateEntitiesMeta, updateEntityMeta, getEntitiesMeta, getEntityMeta } from 'redux-json-api-helper';
 
 // Set a metadata value for an Entity type
 dispatch(updateEntitiesMeta('articles', 'isLoading', true));
@@ -108,7 +108,7 @@ const isLoading = getEntityMeta(state.entities, 'articles', '123', 'isLoading');
 
 ## Helpers
 ```javascript
-import { getId, getIds } from 'giadc-redux-json-api';
+import { getId, getIds } from 'redux-json-api-helper';
 
 // Extract item ID from JSON API response
 getId(jsonResponse);
@@ -119,10 +119,10 @@ getIds(jsonResponse);
 
 ## Generate an entity locally
 Sometimes you may need to generate and store an entity that didn't actually come from a JSON API.    
-__giadc-redux-json-api__ provides a simple `generateEntity` helper function for that.
+__redux-json-api-helper__ provides a simple `generateEntity` helper function for that.
 
 ```javascript
-import { generateEntity, loadJsonApiEntityData, addRelationshipToEntity } from 'giadc-redux-json-api';
+import { generateEntity, loadJsonApiEntityData, addRelationshipToEntity } from 'redux-json-api-helper';
 
 // Generate an Article entity and store it
 // generateEntity(entityKey, attributes);
