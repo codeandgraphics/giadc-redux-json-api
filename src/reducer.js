@@ -14,56 +14,47 @@ import {
 } from './json-api-transformer';
 
 const reducerMap = {
-    [actionNames.LOAD_DATA]: (state, action) => insertOrUpdateEntities(state, action.data),
+    [actionNames.LOAD_DATA]: (state, action) =>
+        insertOrUpdateEntities(state, action.data),
 
-    [actionNames.ADD_RELATIONSHIP]: (state, action) => addRelationshipToEntity(
-        state,
-        action.entityKey,
-        action.entityId,
-        action.relationshipKey,
-        action.relationshipObject
-    ),
+    [actionNames.ADD_RELATIONSHIP]: (state, action) =>
+        addRelationshipToEntity(
+            state,
+            action.entityKey,
+            action.entityId,
+            action.relationshipKey,
+            action.relationshipObject
+        ),
 
-    [actionNames.REMOVE_RELATIONSHIP]: (state, action) => removeRelationshipFromEntity(
-        state,
-        action.entityKey,
-        action.entityId,
-        action.relationshipKey,
-        action.relationshipId
-    ),
+    [actionNames.REMOVE_RELATIONSHIP]: (state, action) =>
+        removeRelationshipFromEntity(
+            state,
+            action.entityKey,
+            action.entityId,
+            action.relationshipKey,
+            action.relationshipId
+        ),
 
-    [actionNames.UPDATE_ENTITIES_META]: (state, action) => updateEntitiesMeta(
-        state,
-        action.entityKey,
-        action.metaKey,
-        action.value,
-    ),
+    [actionNames.UPDATE_ENTITIES_META]: (state, action) =>
+        updateEntitiesMeta(state, action.entityKey, action.metaKey, action.value),
 
-    [actionNames.UPDATE_ENTITY_META]: (state, action) => updateEntityMeta(
-        state,
-        action.entityKey,
-        action.entityId,
-        action.metaKey,
-        action.value,
-    ),
+    [actionNames.UPDATE_ENTITY_META]: (state, action) =>
+        updateEntityMeta(
+            state,
+            action.entityKey,
+            action.entityId,
+            action.metaKey,
+            action.value
+        ),
 
-    [actionNames.UPDATE_ENTITY]: (state, action) => updateEntity(
-        state,
-        action.entityKey,
-        action.entityId,
-        action.data
-    ),
+    [actionNames.UPDATE_ENTITY]: (state, action) =>
+        updateEntity(state, action.entityKey, action.entityId, action.data),
 
-    [actionNames.REMOVE_ENTITY]: (state, action) => removeEntity(
-        state,
-        action.entityKey,
-        action.entityId,
-    ),
+    [actionNames.REMOVE_ENTITY]: (state, action) =>
+        removeEntity(state, action.entityKey, action.entityId),
 
-    [actionNames.CLEAR_ENTITY_TYPE]: (state, action) => clearEntityType(
-        state,
-        action.entityKey
-    ),
+    [actionNames.CLEAR_ENTITY_TYPE]: (state, action) =>
+        clearEntityType(state, action.entityKey),
 
     default: state => state,
 };
@@ -76,14 +67,23 @@ const reducerMap = {
  * @return {Object}
  */
 export default (state = {}, action) => {
-    const actionKey = action && Object.keys(reducerMap)
-        .find(key => action.type && action.type.match(new RegExp(`^${key}(_[_A-Z]+)?$`)));
+    const actionKey =
+        action &&
+        Object.keys(reducerMap).find(
+            key => action.type && action.type.match(new RegExp(`^${key}(_[_A-Z]+)?$`))
+        );
 
     if (actionKey) {
-        return reducerMap[actionKey](Map.isMap(state) ? state : convertTopImmutable(state), action);
+        return reducerMap[actionKey](
+            Map.isMap(state) ? state : convertTopImmutable(state),
+            action
+        );
     }
 
-    return reducerMap.default(Map.isMap(state) ? state : convertTopImmutable(state), action);
+    return reducerMap.default(
+        Map.isMap(state) ? state : convertTopImmutable(state),
+        action
+    );
 };
 
 /**
@@ -93,6 +93,9 @@ export default (state = {}, action) => {
  * @param  {Object} state
  * @return {Map}
  */
-const convertTopImmutable = state => fromJS(state, (key, value) => (
-    Array.isArray(value.toJS()) ? value.toSet() : value.toMap()
-));
+const convertTopImmutable = state =>
+    fromJS(
+        state,
+        (key, value) =>
+            (Array.isArray(value.toJS()) ? value.toSet() : value.toMap())
+    );

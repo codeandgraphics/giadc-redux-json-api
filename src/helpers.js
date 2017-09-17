@@ -1,6 +1,28 @@
 import pluralize from 'pluralize';
 import uuid from 'uuid';
 
+import reduce from 'lodash/reduce';
+import isPlainObject from 'lodash/isPlainObject';
+import camelCase from 'lodash/camelCase';
+
+const deepRename = (entity, modifier) =>
+    reduce(
+        entity,
+        (result, value, key) => {
+            const newKey = modifier(key) || key;
+            const newResult = result;
+
+            if (isPlainObject(value)) {
+                newResult[newKey] = deepRename(value, modifier);
+            } else {
+                newResult[newKey] = value;
+            }
+
+            return newResult;
+        },
+        {}
+    );
+
 /**
  * Grab an Entity from the state
  *
@@ -13,7 +35,7 @@ export const getEntity = (state, key, id) => {
     const pluralKey = pluralize(key);
     const entity = state.getIn([pluralKey, 'byId', id, 'data']);
 
-    return (entity === undefined)
+    return entity === undefined
         ? undefined
         : {
             ...entity.toJS(),
@@ -37,13 +59,15 @@ export const getEntities = (state, key, ids = null) => {
             return [];
         }
 
-        const idsToFetch = state.getIn([pluralKey, 'byId']).keySeq().toArray();
+        const idsToFetch = state
+            .getIn([pluralKey, 'byId'])
+            .keySeq()
+            .toArray();
 
         return idsToFetch.map(id => getEntity(state, pluralKey, id));
     }
 
-    return ids.map(id => getEntity(state, key, id))
-        .filter(entity => !!entity);
+    return ids.map(id => getEntity(state, key, id)).filter(entity => !!entity);
 };
 
 /**
@@ -70,11 +94,11 @@ export const getIds = jsonData => jsonData.data.map(entity => entity.id);
  * @param  {String} metaKey
  * @return {*}
  */
-export const getEntitiesMeta = (state, entityKey, metaKey = null) => (
-    (metaKey === null)
-        ? state.getIn([entityKey, 'meta']) && state.getIn([entityKey, 'meta']).toJS()
-        : state.getIn([entityKey, 'meta', metaKey])
-);
+export const getEntitiesMeta = (state, entityKey, metaKey = null) =>
+    (metaKey === null
+        ? state.getIn([entityKey, 'meta']) &&
+        state.getIn([entityKey, 'meta']).toJS()
+        : state.getIn([entityKey, 'meta', metaKey]));
 
 /**
  * Grab an Entity's meta data from the state
@@ -85,14 +109,11 @@ export const getEntitiesMeta = (state, entityKey, metaKey = null) => (
  * @param  {String} metaKey
  * @return {*}
  */
-export const getEntityMeta = (state, entityKey, entityId, metaKey = null) => (
-    (metaKey === null)
-        ?
-            state.getIn([entityKey, 'byId', entityId, 'meta']) &&
-            state.getIn([entityKey, 'byId', entityId, 'meta']).toJS()
-
-        : state.getIn([entityKey, 'byId', entityId, 'meta', metaKey])
-);
+export const getEntityMeta = (state, entityKey, entityId, metaKey = null) =>
+    (metaKey === null
+        ? state.getIn([entityKey, 'byId', entityId, 'meta']) &&
+        state.getIn([entityKey, 'byId', entityId, 'meta']).toJS()
+        : state.getIn([entityKey, 'byId', entityId, 'meta', metaKey]));
 
 /**
  * Generate a valid Entity with the given attributes
@@ -112,3 +133,11 @@ export const generateEntity = (entityKey, attributes) => {
             .reduce((carrier, key) => ({ ...carrier, [key]: attributes[key] }), {}),
     };
 };
+
+/**
+ * Transform all entity keys into camelCase
+ *
+ * @param {Object} entity
+ * @return {Object}
+ */
+export const camelizeEntity = entity => deepRename(entity, camelCase);

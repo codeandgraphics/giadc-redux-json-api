@@ -22,10 +22,16 @@ export const loadJsonApiEntityData = data => ({
  * @param  {Object} relationshipObject
  * @return {Object}
  */
-export const addRelationshipToEntity = (entityKey, entityId, relationshipKey, relationshipObject) => ({
-    type: `${
-        actionNames.ADD_RELATIONSHIP
-    }_${pluralize(entityKey, 1).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
+export const addRelationshipToEntity = (
+    entityKey,
+    entityId,
+    relationshipKey,
+    relationshipObject
+) => ({
+    type: `${actionNames.ADD_RELATIONSHIP}_${pluralize(
+        entityKey,
+        1
+    ).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
     entityKey,
     entityId,
     relationshipKey,
@@ -41,10 +47,16 @@ export const addRelationshipToEntity = (entityKey, entityId, relationshipKey, re
  * @param  {String} relationshipId
  * @return {Object}
  */
-export const removeRelationshipFromEntity = (entityKey, entityId, relationshipKey, relationshipId) => ({
-    type: `${
-        actionNames.REMOVE_RELATIONSHIP
-    }_${pluralize(entityKey, 1).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
+export const removeRelationshipFromEntity = (
+    entityKey,
+    entityId,
+    relationshipKey,
+    relationshipId
+) => ({
+    type: `${actionNames.REMOVE_RELATIONSHIP}_${pluralize(
+        entityKey,
+        1
+    ).toUpperCase()}_${pluralize(relationshipKey).toUpperCase()}`,
     entityKey,
     entityId,
     relationshipKey,
@@ -75,7 +87,9 @@ export const updateEntity = (entityKey, entityId, data) => ({
  * @return {Object}
  */
 export const updateEntitiesMeta = (entityKey, metaKey, value) => ({
-    type: `${actionNames.UPDATE_ENTITIES_META}_${pluralize(entityKey).toUpperCase()}`,
+    type: `${actionNames.UPDATE_ENTITIES_META}_${pluralize(
+        entityKey
+    ).toUpperCase()}`,
     entityKey,
     metaKey,
     value,
@@ -91,7 +105,10 @@ export const updateEntitiesMeta = (entityKey, metaKey, value) => ({
  * @return {Object}
  */
 export const updateEntityMeta = (entityKey, entityId, metaKey, value) => ({
-    type: `${actionNames.UPDATE_ENTITY_META}_${pluralize(entityKey, 1).toUpperCase()}`,
+    type: `${actionNames.UPDATE_ENTITY_META}_${pluralize(
+        entityKey,
+        1
+    ).toUpperCase()}`,
     entityKey,
     entityId,
     metaKey,
@@ -118,6 +135,8 @@ export const removeEntity = (entityKey, entityId) => ({
  * @return {Object}
  */
 export const clearEntityType = entityKey => ({
-    type: `${actionNames.CLEAR_ENTITY_TYPE}_${pluralize(entityKey).toUpperCase()}`,
+    type: `${actionNames.CLEAR_ENTITY_TYPE}_${pluralize(
+        entityKey
+    ).toUpperCase()}`,
     entityKey,
 });
