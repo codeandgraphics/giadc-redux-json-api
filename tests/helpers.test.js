@@ -30,26 +30,6 @@ describe("getEntity", () => {
         });
     });
 
-    it("should return an entity with multiple relations", () => {
-        expect(getEntityWithRelationships(state, "article", "1", ["comments"])).to.eql({
-            "id": "1",
-            "title": "JSON API paints my bikeshed!",
-            "author": "9",
-            "comments": [
-                {
-                    "author": "2",
-                    "body": "First!",
-                    "id": "5"
-                },
-                {
-                    "author": "9",
-                    "body": "I like XML better",
-                    "id": "12"
-                },
-            ]
-        });
-    });
-
     it("should return `undefined` if the entity does not exist", () => {
         expect(getEntity(state, "article", 666)).to.equal(undefined);
     });

@@ -1,3 +1,4 @@
+import { Set } from 'immutable';
 import pluralize from 'pluralize';
 import uuid from 'uuid';
 
@@ -26,77 +27,66 @@ const deepRename = (entity, modifier) =>
 /**
  * Grab an Entity from the state
  *
- * @param  {Object} state
+ * @param  {Map}    state
  * @param  {String} key
  * @param  {String} id
  * @return {Object}
  */
-export const getEntity = (state, key, id) => {
+export const getEntity = (state, key, id, expand = false) => {
     const pluralKey = pluralize(key);
-    const entity = state.getIn([pluralKey, 'byId', id, 'data']);
+    const entity = state.getIn([pluralKey, 'byId', id]);
 
 
     return entity === undefined
         ? undefined
         : {
-            ...entity.toJS(),
+            ...entity.get('attributes').toJS(),
             id,
+            ...transformRelationships(state, entity.get('relationships'), expand)
         };
 };
 
 /**
- * Grab an Entity from the state with relationships
+ * Transform the relationships
  *
- * @param  {Object} state
- * @param  {String} key
- * @param  {String} id
- * @param  {*} relations
- * @return {Object}
+ * @param  {Map}     state
+ * @param  {Object}  relationships
+ * @param  {Boolean} expand
+ * @return {Map}
  */
-export const getEntityWithRelationships = (state, key, id, relations = null) => {
-    const entity = getEntity(state, key, id);
-
-    if (Array.isArray(relations)) {
-        const relationships = relations.reduce((result, relation) => ({
-            ...result,
-            [relation]: getRelationships(state, relation, entity),
-        }), {});
-
-        return {
-            ...entity,
-            ...relationships,
-        };
-    } else if (typeof relations === 'string') {
-        return {
-            ...entity,
-            [relations]: getRelationships(state, relations, entity),
-        };
+const transformRelationships = (state, relationships, expand = false) => {
+    if (relationships === undefined) {
+        return {};
     }
 
-    return entity;
-};
+    const expandRelationshipOrMapToId = relationship => (
+        expand
+            ? getEntity(state, relationship.get('type'), relationship.get('id'), true)
+            : relationship.get('id')
+    );
 
-const getRelationships = (state, relation, entity) => {
-    const relationIds = entity[relation];
-    if (Array.isArray(relationIds)) {
-        return getEntities(state, relation, relationIds);
-    }
-
-    return getEntity(state, relation, relationIds);
-};
+    return relationships.reduce((reduction, value, key) => {
+        return {
+            ...reduction,
+            [key]: Set.isSet(value)
+                ? value.map(relationship => expandRelationshipOrMapToId(relationship)).toArray()
+                : expandRelationshipOrMapToId(value)
+        }
+    }, {});
+}
 
 /**
  * Get an array of Entities from the state
  *
- * @param  {Object}     state
+ * @param  {Map}        state
  * @param  {String}     key
  * @param  {Array|null} ids
  * @return {Array}
  */
-export const getEntities = (state, key, ids = null) => {
+export const getEntities = (state, key, ids = undefined, expand = false) => {
     const pluralKey = pluralize(key);
 
-    if (ids === null) {
+    if (ids === undefined) {
         if (!state.hasIn([pluralKey, 'byId'])) {
             return [];
         }
@@ -106,38 +96,11 @@ export const getEntities = (state, key, ids = null) => {
             .keySeq()
             .toArray();
 
-        return idsToFetch.map(id => getEntity(state, pluralKey, id));
+        return idsToFetch.map(id => getEntity(state, pluralKey, id, expand));
     }
 
-    return ids.map(id => getEntity(state, key, id)).filter(entity => !!entity);
-};
-
-/**
- * Get an array of Entities from the state with multiple relationships
- *
- * @param  {Object}     state
- * @param  {String}     key
- * @param  {Array|null} ids
- * @param  {*|null}     relations
- * @return {Array}
- */
-export const getEntitiesWithRelationships = (state, key, ids = null, relations = null) => {
-    const pluralKey = pluralize(key);
-
-    if (ids === null) {
-        if (!state.hasIn([pluralKey, 'byId'])) {
-            return [];
-        }
-
-        const idsToFetch = state
-            .getIn([pluralKey, 'byId'])
-            .keySeq()
-            .toArray();
-
-        return idsToFetch.map(id => getEntityWithRelationships(state, pluralKey, id, relations));
-    }
-
-    return ids.map(id => getEntityWithRelationships(state, key, id, relations)).filter(entity => !!entity);
+    return ids.map(id => getEntity(state, key, id, expand))
+        .filter(entity => !!entity);
 };
 
 /**
@@ -159,7 +122,7 @@ export const getIds = jsonData => jsonData.data.map(entity => entity.id);
 /**
  * Grab an Entity group's meta data from the state
  *
- * @param  {Object} state
+ * @param  {Map}    state
  * @param  {String} entityKey
  * @param  {String} metaKey
  * @return {*}
@@ -173,7 +136,7 @@ export const getEntitiesMeta = (state, entityKey, metaKey = null) =>
 /**
  * Grab an Entity's meta data from the state
  *
- * @param  {Object} state
+ * @param  {Map}    state
  * @param  {String} entityKey
  * @param  {String} entityId
  * @param  {String} metaKey
