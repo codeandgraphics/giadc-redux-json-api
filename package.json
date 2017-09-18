@@ -1,6 +1,6 @@
 {
   "name": "redux-json-api-helper",
-  "version": "1.1.2",
+  "version": "1.0.0",
   "description": "Reducer, actions, and helper functions for managing JSON API entities in Redux",
   "main": "./lib/index.js",
   "scripts": {
